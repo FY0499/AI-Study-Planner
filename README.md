@@ -2,7 +2,7 @@
 
 I built this n8n workflow to help students prepare for exams using their course materials, exam date, available study hours, and the topics they need to study. It generates detailed study material and a personalized study plan that is sent by email.
 
-<img width="608" height="207" alt="image" src="https://github.com/user-attachments/assets/376cac4c-00c2-4d3a-a039-fcea1bf170b0" />
+<img width="608" height="207" alt="AI Study Planner workflow demo" src="https://github.com/user-attachments/assets/376cac4c-00c2-4d3a-a039-fcea1bf170b0" />
 
 ## How it works
 
