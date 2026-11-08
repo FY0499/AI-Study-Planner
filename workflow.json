@@ -1,0 +1,134 @@
+{
+  "name": "My workflow 5 - محسّن",
+  "nodes": [
+    {
+      "parameters": {
+        "source": "googleSheets",
+        "documentId": {
+          "__rl": true,
+          "value": "1wlwiFucGvd2b_gtEnn1sTKqPlsozLP8zEWvdfmJmKUY",
+          "mode": "list",
+          "cachedResultName": "نموذج بدون عنوان (الردود)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wlwiFucGvd2b_gtEnn1sTKqPlsozLP8zEWvdfmJmKUY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 328077195,
+          "mode": "list",
+          "cachedResultName": "ردود النموذج 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wlwiFucGvd2b_gtEnn1sTKqPlsozLP8zEWvdfmJmKUY/edit#gid=328077195"
+        }
+      },
+      "type": "n8n-nodes-base.evaluationTrigger",
+      "typeVersion": 4.7,
+      "position": [0, 0],
+      "id": "9d9fc727-7e4f-4141-9d0a-ef520a43b147",
+      "name": "When fetching a dataset row",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PzzeTiR95WWmDMp1",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['ارفع ملفات المحاضرات الخاصة بك.'].replace('open?id=', 'uc?export=download&id=') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [224, 0],
+      "id": "0a59eb1a-df27-4844-84cd-b4856e5d68c5",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=أنت دكتور خبير ومتخصص في تدريس مادة {{ $('When fetching a dataset row').item.json['ما هي المادة التي تدرسها؟'] }} بأسلوب أكاديمي متميز.\n\nلديك الكتاب/المحاضرات الخاصة بالمادة كاملاً.\n\n⚠️ معلومة مهمة جداً:\n- تاريخ اليوم هو: {{ new Date().toISOString().split('T')[0] }}\n- موعد الامتحان: {{ $('When fetching a dataset row').item.json['متى موعد امتحانك؟ '] }}\n- احسب الفرق الحقيقي بين تاريخ اليوم وموعد الامتحان بدقة، ولا تفترض أي سنة بنفسك\n- إذا كان الفرق أقل من شهر اعتمد على الأيام المتاحة فقط ولا تمدد الخطة\n\nمعلومات الطالب:\n- المادة: {{ $('When fetching a dataset row').item.json['ما هي المادة التي تدرسها؟'] }}\n- موعد الامتحان: {{ $('When fetching a dataset row').item.json['متى موعد امتحانك؟ '] }}\n- ساعات الدراسة اليومية: {{ $('When fetching a dataset row').item.json['كم ساعة يمكنك الدراسة يوميًا؟'] }}\n- المواضيع المطلوبة: {{ $('When fetching a dataset row').item.json['ما هي المواضيع التي تحتاج إلى دراستها بالتحديد؟ '] }}\n\n⚠️ تعليمات مهمة جداً:\n- إذا كانت المواضيع المطلوبة محددة → اشرح تلك المواضيع فقط بعمق كامل\n- إذا كانت المواضيع المطلوبة فارغة أو تقول \"كل المادة\" أو \"الكل\" → اشرح جميع شابترات الكتاب المرفق كاملاً\n- اعتمد على محتوى الكتاب المرفق بالكامل في شرحك\n- يجب أن يكون شرحك شاملاً لدرجة أن الطالب لا يحتاج للرجوع للكتاب أبداً\n- اكتب بلغة عربية واضحة وبسيطة\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📚 ملخص عام للمادة\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n[اكتب مقدمة شاملة عن المادة: ما هي؟ ما أهميتها؟ ما الذي سيتعلمه الطالب منها؟ وما العلاقة بين شابتراتها؟]\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n[كرر الهيكل التالي لكل شابتر/موضوع]\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📘 الشابتر [رقم]: [اسم الشابتر]\n\n🎯 الفكرة المحورية:\n[جملتان تلخصان جوهر الشابتر]\n\n📖 الشرح التفصيلي الكامل:\n[اشرح كل نقطة وكل مفهوم في الشابتر كأنك تشرحه في محاضرة جامعية.\nلا تختصر أي فكرة. اشرح كل مصطلح. اربط الأفكار ببعضها.\nاستخدم أسلوب الدكتور الذي يريد طلابه أن يفهموا فعلاً لا أن يحفظوا فقط.]\n\n💡 أمثلة عملية وتطبيقات:\n[أعطِ 3 إلى 5 أمثلة واقعية وعملية لكل مفهوم رئيسي في الشابتر.\nاختر أمثلة من الحياة اليومية أو من مجال التخصص لتثبيت الفهم]\n\n⚡ أهم النقاط للامتحان:\n[حدد من 5 إلى 7 نقاط جوهرية يجب أن يتقنها الطالب تماماً.\nرتبها من الأهم إلى الأقل أهمية]\n\n✏️ أسئلة تدريبية مع النماذج:\n[ضع 5 أسئلة متنوعة تشمل: سؤال تعريف، سؤال تطبيق، سؤال مقارنة، سؤال تحليل، سؤال رأي.\nأرفق إجابة نموذجية كاملة لكل سؤال]\n\n📝 ملخص سريع للمراجعة:\n[نقاط مرقمة لا تتجاوز 10 سطور تغطي أهم ما في الشابتر للمراجعة الأخيرة]\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 خطة الدراسة اليومية المفصّلة\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n[أنشئ جدولاً يومياً من اليوم ({{ new Date().toISOString().split('T')[0] }}) حتى {{ $('When fetching a dataset row').item.json['متى موعد امتحانك؟ '] }}\n\nالقواعد:\n- كل يوم مقسّم على {{ $('When fetching a dataset row').item.json['كم ساعة يمكنك الدراسة يوميًا؟'] }} ساعات دراسة\n- وزّع الشابترات بشكل منطقي حسب صعوبتها وحجمها\n- خصص يوماً كاملاً قبل الامتحان للمراجعة الشاملة فقط\n- أضف في كل يوم: ماذا يدرس + كيف يدرس + ما الذي يراجعه\n\nمثال للجدول:\nاليوم الأول (التاريخ): الشابتر 1 - القراءة الأولى + تدوين الملاحظات (ساعتان) + حل أسئلة الشابتر (ساعة)\nاليوم الثاني (التاريخ): الشابتر 2 - نفس الأسلوب + مراجعة سريعة لليوم الأول (30 دقيقة)\n...]",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [448, 0],
+      "id": "039e6a44-7f87-4e37-904d-6b13aa08c192",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [528, 224],
+      "id": "bb6f8036-3550-44ed-a5fe-110d1e7507b4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "TxdQfwWHdUcEel9c",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ════════════════════════════════════════════════\n// تحويل Markdown → HTML أنيق بدون # و *\n// ════════════════════════════════════════════════\n\nconst raw = $('AI Agent').item.json.output || '';\n\nfunction mdToHtml(text) {\n  let html = text;\n\n  // ── عناوين ──────────────────────────────────────\n  html = html.replace(/^#{4}\\s+(.+)$/gm, '<h4>$1</h4>');\n  html = html.replace(/^#{3}\\s+(.+)$/gm, '<h3>$1</h3>');\n  html = html.replace(/^#{2}\\s+(.+)$/gm, '<h2>$1</h2>');\n  html = html.replace(/^#{1}\\s+(.+)$/gm, '<h1>$1</h1>');\n\n  // ── خطوط فاصلة ━━━ أو --- ───────────────────────\n  html = html.replace(/━+/g, '<hr class=\"divider\">');\n  html = html.replace(/^-{3,}$/gm, '<hr class=\"divider\">');\n\n  // ── Bold **text** و __text__ ────────────────────\n  html = html.replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>');\n  html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');\n\n  // ── Italic *text* ───────────────────────────────\n  html = html.replace(/(?<!\\*)\\*(?!\\*)(.+?)(?<!\\*)\\*(?!\\*)/g, '<em>$1</em>');\n\n  // ── قوائم مرقمة 1. ──────────────────────────────\n  html = html.replace(/^\\d+\\.\\s+(.+)$/gm, '<li class=\"numbered\">$1</li>');\n  html = html.replace(/(<li class=\"numbered\">.*?<\\/li>\\n?)+/gs, '<ol>$&</ol>');\n\n  // ── قوائم نقطية * أو - ──────────────────────────\n  html = html.replace(/^[\\*\\-]\\s+(.+)$/gm, '<li>$1</li>');\n  html = html.replace(/(<li>(?!.*class).*?<\\/li>\\n?)+/gs, '<ul>$&</ul>');\n\n  // ── رموز تعبيرية كعناوين أقسام (📘 📅 ⚡ إلخ) ───\n  html = html.replace(/^([📘📅⚡✏️💡🎯📝📚⚠️🔑✅❌🔸🔹➤►•].*?)$/gm, '<div class=\"section-title\">$1</div>');\n\n  // ── فقرات ────────────────────────────────────────\n  // فصل الفقرات بسطر فارغ\n  html = html.replace(/\\n\\n+/g, '\\n\\n');\n  const lines = html.split('\\n');\n  const result = [];\n  let inParagraph = false;\n\n  for (let i = 0; i < lines.length; i++) {\n    const line = lines[i].trim();\n    if (line === '') {\n      if (inParagraph) { result.push('</p>'); inParagraph = false; }\n    } else if (\n      line.startsWith('<h') || line.startsWith('<ul') ||\n      line.startsWith('<ol') || line.startsWith('<li') ||\n      line.startsWith('<hr') || line.startsWith('<div') ||\n      line.startsWith('</') \n    ) {\n      if (inParagraph) { result.push('</p>'); inParagraph = false; }\n      result.push(line);\n    } else {\n      if (!inParagraph) { result.push('<p>'); inParagraph = true; }\n      result.push(line);\n    }\n  }\n  if (inParagraph) result.push('</p>');\n\n  return result.join('\\n');\n}\n\nconst htmlContent = mdToHtml(raw);\n\nreturn [{ json: { htmlOutput: htmlContent } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [672, 0],
+      "id": "c4f1a2b3-8d9e-4f5a-b6c7-d8e9f0a1b2c3",
+      "name": "Markdown to HTML"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('When fetching a dataset row').item.json['يرجى إدخال بريدك الإلكتروني لاستلام النتائج '] }}",
+        "subject": "=🎓 خطتك الدراسية الكاملة - مادة {{ $('When fetching a dataset row').item.json['ما هي المادة التي تدرسها؟'] }}",
+        "message": "=<html dir=\"rtl\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n  body {\n    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;\n    background: #f0f4f8;\n    padding: 20px;\n    color: #2d3748;\n    margin: 0;\n    font-size: 15px;\n    line-height: 1.9;\n  }\n  .wrapper {\n    max-width: 780px;\n    margin: auto;\n  }\n  /* ── Header ── */\n  .header {\n    background: linear-gradient(135deg, #1a56db, #4A90D9);\n    color: white;\n    border-radius: 16px 16px 0 0;\n    padding: 32px;\n    text-align: center;\n  }\n  .header h1 { margin: 0 0 8px 0; font-size: 26px; }\n  .header p  { margin: 0; opacity: 0.9; font-size: 14px; }\n  /* ── Info bar ── */\n  .info-bar {\n    background: white;\n    padding: 16px 24px;\n    display: flex;\n    gap: 10px;\n    flex-wrap: wrap;\n    border-bottom: 2px solid #e2e8f0;\n  }\n  .badge {\n    display: inline-block;\n    padding: 6px 14px;\n    border-radius: 20px;\n    font-size: 13px;\n    font-weight: 600;\n  }\n  .badge-blue   { background: #ebf5fb; color: #1a56db; }\n  .badge-green  { background: #e8f8f0; color: #0d6e4b; }\n  .badge-orange { background: #fef3e2; color: #b45309; }\n  /* ── Main content ── */\n  .content {\n    background: white;\n    padding: 36px 40px;\n    border-radius: 0 0 16px 16px;\n  }\n  /* ── Typography ── */\n  .content h1 {\n    font-size: 22px;\n    color: #1a3a6b;\n    border-right: 5px solid #1a56db;\n    padding-right: 14px;\n    margin-top: 36px;\n    margin-bottom: 12px;\n  }\n  .content h2 {\n    font-size: 19px;\n    color: #1a56db;\n    border-right: 4px solid #4A90D9;\n    padding-right: 12px;\n    margin-top: 30px;\n    margin-bottom: 10px;\n  }\n  .content h3 {\n    font-size: 16px;\n    color: #2c5282;\n    margin-top: 20px;\n    margin-bottom: 8px;\n  }\n  .content h4 {\n    font-size: 15px;\n    color: #2d3748;\n    margin-top: 16px;\n    margin-bottom: 6px;\n  }\n  .content p {\n    margin: 8px 0 14px 0;\n    color: #3d4a5c;\n  }\n  /* ── Lists ── */\n  .content ul {\n    padding-right: 24px;\n    margin: 10px 0 16px 0;\n  }\n  .content ul li {\n    margin-bottom: 8px;\n    color: #3d4a5c;\n    list-style-type: '✦  ';\n  }\n  .content ol {\n    padding-right: 24px;\n    margin: 10px 0 16px 0;\n  }\n  .content ol li {\n    margin-bottom: 8px;\n    color: #3d4a5c;\n  }\n  /* ── Section title (emoji headings) ── */\n  .content .section-title {\n    font-size: 16px;\n    font-weight: 700;\n    color: #1a3a6b;\n    background: #f0f5ff;\n    border-radius: 8px;\n    padding: 10px 16px;\n    margin: 20px 0 10px 0;\n    border-right: 4px solid #1a56db;\n  }\n  /* ── Divider ── */\n  .content hr.divider {\n    border: none;\n    border-top: 2px solid #e2e8f0;\n    margin: 28px 0;\n  }\n  /* ── Footer ── */\n  .footer {\n    text-align: center;\n    margin-top: 24px;\n    color: #718096;\n    font-size: 13px;\n    padding: 16px;\n  }\n</style>\n</head>\n<body>\n<div class=\"wrapper\">\n\n  <div class=\"header\">\n    <h1>🎓 خطتك الدراسية الذكية</h1>\n    <p>تم إعدادها خصيصاً لك بواسطة مدرّبك الدراسي الذكي</p>\n  </div>\n\n  <div class=\"info-bar\">\n    <span class=\"badge badge-blue\">📚 المادة: {{ $('When fetching a dataset row').item.json['ما هي المادة التي تدرسها؟'] }}</span>\n    <span class=\"badge badge-orange\">📅 الامتحان: {{ $('When fetching a dataset row').item.json['متى موعد امتحانك؟ '] }}</span>\n    <span class=\"badge badge-green\">⏰ {{ $('When fetching a dataset row').item.json['كم ساعة يمكنك الدراسة يوميًا؟'] }} يومياً</span>\n    <span class=\"badge badge-blue\">📖 {{ $('When fetching a dataset row').item.json['ما هي المواضيع التي تحتاج إلى دراستها بالتحديد؟ '] }}</span>\n  </div>\n\n  <div class=\"content\">\n{{ $('Markdown to HTML').item.json.htmlOutput }}\n  </div>\n\n  <div class=\"footer\">\n    تم إنشاء هذه الخطة بواسطة مدربك الدراسي الذكي 🤖<br>\n    <strong>بالتوفيق في امتحانك! 💪</strong>\n  </div>\n\n</div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [896, 0],
+      "id": "12c89ab9-d937-40fb-91bd-8b25f391e602",
+      "name": "Send a message",
+      "webhookId": "0f16ea28-8709-4186-b8db-7fb878f78575",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hxtjFHxwjvCSo6hD",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When fetching a dataset row": {
+      "main": [[{"node": "HTTP Request", "type": "main", "index": 0}]]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [[{"node": "AI Agent", "type": "ai_languageModel", "index": 0}]]
+    },
+    "HTTP Request": {
+      "main": [[{"node": "AI Agent", "type": "main", "index": 0}]]
+    },
+    "AI Agent": {
+      "main": [[{"node": "Markdown to HTML", "type": "main", "index": 0}]]
+    },
+    "Markdown to HTML": {
+      "main": [[{"node": "Send a message", "type": "main", "index": 0}]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8733f8b3-9ecb-4766-a926-6b43b2671d1c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "35a01ef79957286e2d6b6c1cab9fcac7a11b2d2121cb54fc3ff992653daf4813"
+  },
+  "id": "5EC1a6fTmkjufjpz",
+  "tags": []
+}
