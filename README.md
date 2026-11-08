@@ -1,32 +1,28 @@
-# AI Study Planner and Exam Preparation Assistant
+# AI Study Planner
 
-An n8n workflow that takes a student's course materials, exam date, available study hours, and selected topics, then uses AI to prepare detailed learning material and a day-by-day study plan delivered by email.
+I built this n8n workflow to help students prepare for exams using their course materials, exam date, available study hours, and the topics they need to study. It generates detailed study material and a personalized study plan that is sent by email.
 
 ## How it works
 
-1. The workflow is triggered by a submitted Google Sheets evaluation row containing the student's course, exam date, daily study time, requested topics, lecture files, and email address.
-2. It downloads the uploaded lecture or course material.
-3. A Gemini-powered AI agent prepares an extensive course explanation, examples, exam-focused points, practice questions with model answers, chapter summaries, and a daily study schedule based on the time remaining.
-4. A JavaScript step converts the generated Markdown into HTML.
-5. The final study material and plan are sent to the student by email.
+1. The student submits the course name, exam date, available daily study hours, requested topics, course material link, and email address through the connected form.
+2. The workflow downloads the uploaded lecture or course material.
+3. Google Gemini analyzes the material and prepares explanations, practical examples, important exam points, practice questions with answers, and chapter summaries.
+4. The AI creates a day-by-day study schedule based on the time remaining until the exam and the student's available study hours.
+5. The workflow converts the result into HTML and sends the study plan by email.
+
+## Main features
+
+- Course material and lecture file processing.
+- Study plan based on the exam date.
+- Personalized daily schedule.
+- Detailed explanations and practical examples.
+- Practice questions with model answers.
+- HTML-formatted email delivery.
 
 ## Technologies
 
-- n8n
-- Google Sheets
-- Google Gemini
-- HTTP Request
-- JavaScript
-- Markdown-to-HTML conversion
-- Gmail
+n8n, Google Sheets, Google Gemini, HTTP Request, JavaScript, HTML, and Gmail.
 
 ## Setup
 
-1. Import workflow.json into n8n.
-2. Configure Google Sheets, Gemini, and Gmail credentials.
-3. Connect your own response sheet and ensure its column labels match the workflow expressions.
-4. Use an accessible course-material link and a test email address when validating the workflow.
-
-## Notes
-
-This repository contains the exported n8n workflow. Configure your own credentials and integrations in n8n before running it.
+Import [workflow.json](./workflow.json) into n8n, configure your Google Sheets, Gemini, and Gmail credentials, then connect your form response sheet and test the workflow with a sample course file and exam date.
